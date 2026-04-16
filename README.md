@@ -80,7 +80,8 @@ Visualização original com:
 | Biblioteca de Imagem | IVC |
 | Compilador | MinGW-w64 (MSYS2) |
 
----
+
+
 
 ## Estrutura do Projeto
 
@@ -91,6 +92,7 @@ C:/VCTP/
 └── lib/
     ├── vc.h
     └── vc.c
+```
 
 ## Build & Run
 ### Compilação
