@@ -5,7 +5,7 @@
 ![Platform](https://img.shields.io/badge/platform-Windows-lightgrey)
 ![Status](https://img.shields.io/badge/status-Academic%20Project-orange)
 
-Sistema de **Visão por Computador** para deteção, contagem e classificação de laranjas em ambiente industrial, utilizando processamento de imagem em tempo real.
+Este projeto foi desenvolvido para a unidade curricular de **Visão por Computador**. O sistema processa um fluxo de vídeo industrial para identificar, contar e classificar laranjas numa passadeira rolante, distinguindo-as de outros elementos (maçãs e folhas).
 
 ---
 
@@ -80,17 +80,44 @@ Visualização original com:
 | Biblioteca de Imagem | IVC |
 | Compilador | MinGW-w64 (MSYS2) |
 
+---
 
+## Divisão de Trabalho (Branches)
 
+O projeto está dividido em 4 ramos (branches) principais, correspondentes às fases de desenvolvimento:
+
+### 1. `f1-setup-seg` (Estudo do vídeo + segmentação)
+* Estudo visual do vídeo e testes nos espaços de cor RGB/HSV.
+* Implementação de `vc_rgb_to_hsv_2()` e `vc_hsv_segmentation()`.
+* Limpeza morfológica através de operações de `open` e `close`.
+
+### 2. `f2-blobs` (Histograma, equalização e blobs)
+* Análise de histogramas e testes de equalização.
+* Conversão de máscara (3 canais para 1 canal).
+* Etiquetagem e extração de dados via `vc_binary_blob_labelling()` e `vc_binary_blob_info()`.
+
+### 3. `f3-calibre` (Geometria, calibre e categoria)
+* Cálculo de métricas: circularidade e diâmetro equivalente.
+* Conversão de unidades (px -> mm) e tabela de calibres por categoria.
+* Testes de deteção de arestas (Sobel/Prewitt) se necessário.
+
+### 4. `f4-integracao` (Integração final e tracking)
+* Consolidação do pipeline no `main.cpp`.
+* Implementação de lógica de contagem na frame e tracking para total acumulado.
+* Overlay gráfico com OpenCV e realização de testes finais.
+
+---
 
 ## Estrutura do Projeto
 
 ```text
 C:/VCTP/
-├── main.cpp
-├── video.avi
-└── lib/
-    ├── vc.h
+├── main.cpp          # Integrador do Pipeline
+├── video.avi         # Ficheiro de vídeo (Ignore via .gitignore)
+├── docs/             # Manuais e documentação técnica
+│   └── Manual_Configuracao_Final_VCTP.html
+└── lib/              # Biblioteca de Visão por Computador (C)
+    ├── vc.h          
     └── vc.c
 ```
 
@@ -105,4 +132,6 @@ g++ -g main.cpp -x c lib/vc.c -x none -o CitrID.exe \
 ## Licença
 
 Projeto desenvolvido para fins académicos - Licenciatura em Engenharia de Sistemas Informáticos (LESI) @ IPCA.
+
+
 
