@@ -18,8 +18,6 @@ O **CitrID** processa vídeo de uma passadeira rolante para:
 - Contar automaticamente os frutos  
 - Determinar métricas geométricas e calibre real  
 
-Este projeto foi desenvolvido no âmbito da unidade curricular de **Visão por Computador** da licenciatura em Engenharia de Sistemas Informáticos.
-
 ---
 
 ## Features
