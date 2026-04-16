@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual de Instalação e Configuração VCTP</title>
+    <style>
+        :root {
+            --primary: #1a2a3a;
+            --accent: #0056b3;
+            --code-bg: #f4f4f4;
+            --border: #d1d1d1;
+            --sidebar-width: 280px;
+        }
+        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; display: flex; background: #fdfdfd; color: #333; }
+        
+        /* Menu Lateral */
+        nav { width: var(--sidebar-width); background: var(--primary); color: white; height: 100vh; position: fixed; padding: 20px 0; overflow-y: auto; }
+        nav h2 { padding: 0 20px; font-size: 1.1rem; color: #3498db; border-bottom: 1px solid #34495e; padding-bottom: 10px; }
+        nav ul { list-style: none; padding: 0; }
+        nav ul li a { display: block; padding: 12px 20px; color: #bdc3c7; text-decoration: none; border-bottom: 1px solid #2c3e50; font-size: 0.9rem; transition: 0.2s; }
+        nav ul li a:hover { background: #2c3e50; color: white; padding-left: 30px; }
+
+        /* Conteúdo */
+        main { margin-left: var(--sidebar-width); padding: 40px 60px; width: 100%; box-sizing: border-box; }
+        h1 { color: var(--primary); border-bottom: 4px solid var(--accent); padding-bottom: 15px; }
+        h2 { color: var(--accent); margin-top: 40px; padding-bottom: 5px; border-bottom: 1px solid #eee; }
+        h3 { color: #2c3e50; margin-top: 25px; background: #eef; padding: 5px 10px; border-radius: 4px; display: inline-block; }
+        
+        .code-box { background: var(--code-bg); border: 2px solid var(--border); border-radius: 6px; padding: 18px; font-family: 'Consolas', monospace; font-size: 0.95rem; color: #000; line-height: 1.6; margin: 15px 0; }
+        .cmd { color: #b91d1d; font-weight: bold; }
+        .flag { color: #0056b3; font-weight: bold; }
+        .url { color: #059669; text-decoration: underline; font-weight: bold; }
+        
+        .step-box { background: #fff; border: 1px solid #ddd; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .badge { background: #3498db; color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.8rem; font-weight: bold; vertical-align: middle; }
+        
+        footer { text-align: center; color: #999; margin-top: 80px; padding: 20px; border-top: 1px solid #eee; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <h2>GUIA DE CONFIGURAÇÃO</h2>
+    <ul>
+        <li><a href="#downloads">1. Onde Baixar os Apps</a></li>
+        <li><a href="#instalacao">2. Instalação MSYS2</a></li>
+        <li><a href="#opencv">3. Instalação OpenCV</a></li>
+        <li><a href="#path">4. Variáveis de Ambiente</a></li>
+        <li><a href="#projeto">5. Estrutura do Projeto</a></li>
+        <li><a href="#vscode">6. Configuração VS Code</a></li>
+        <li><a href="#compilacao">7. Comando de Compilação</a></li>
+    </ul>
+</nav>
+
+<main>
+    <h1>Manual Completo de Ambiente: VCTP</h1>
+    <p>Este guia detalha cada passo necessário para configurar o ambiente de Visão por Computador do zero.</p>
+
+    <section id="downloads">
+        <h2>1. Onde buscar as ferramentas</h2>
+        <div class="step-box">
+            <ul>
+                <li><strong>VS Code:</strong> <a class="url" href="https://code.visualstudio.com/" target="_blank">code.visualstudio.com</a> (Editor de código)</li>
+                <li><strong>MSYS2:</strong> <a class="url" href="https://www.msys2.org/" target="_blank">msys2.org</a> (Gestor de compilador e bibliotecas)</li>
+                <li><strong>Extensões VS Code:</strong> Instala o pack "C/C++ Extension Pack" da Microsoft.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="instalacao">
+        <h2>2. Instalação do MSYS2 e Compilador</h2>
+        <div class="step-box">
+            <p>1. Instala o MSYS2 em <code>C:\msys64</code>.</p>
+            <p>2. Abre o terminal <strong>MSYS2 MinGW64</strong> e instala o g++:</p>
+            <div class="code-box">
+                <span class="cmd">pacman</span> -S mingw-w64-x86_64-gcc
+            </div>
+        </div>
+    </section>
+
+    <section id="opencv">
+        <h2>3. Instalação do OpenCV</h2>
+        <div class="step-box">
+            <p>No mesmo terminal <strong>MSYS2 MinGW64</strong>, instala o OpenCV:</p>
+            <div class="code-box">
+                <span class="cmd">pacman</span> -S mingw-w64-x86_64-opencv
+            </div>
+            <p><small>*Este processo pode demorar alguns minutos dependendo da internet.</small></p>
+        </div>
+    </section>
+
+    <section id="path">
+        <h2>4. Variáveis de Ambiente (Passo Crítico)</h2>
+        <div class="step-box">
+            <p>Para o Windows encontrar o compilador e o OpenCV:</p>
+            <ol>
+                <li>Pesquisa por "Variáveis de Ambiente" no Windows.</li>
+                <li>No <strong>Path</strong> do Sistema, clica em "Editar" e adiciona:</li>
+            </ol>
+            <div class="code-box">
+                C:\msys64\mingw64\bin
+            </div>
+            <p><strong>Nota:</strong> Reinicia o VS Code depois de fazeres isto!</p>
+        </div>
+    </section>
+
+    <section id="projeto">
+        <h2>5. Estrutura de Pastas do Projeto</h2>
+        <p>Garante que tens esta organização para evitar erros de caminho:</p>
+        <div class="code-box">
+            C:\VCTP\ <br>
+            ├── main.cpp  <span class="badge">C++</span> <br>
+            ├── video.avi <span class="badge">Vídeo</span> <br>
+            └── lib\ <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;├── vc.h <span class="badge">Header</span> <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;└── vc.c <span class="badge">Implementação C</span>
+        </div>
+    </section>
+
+    <section id="vscode">
+        <h2>6. Configuração VS Code (tasks.json)</h2>
+        <p>Vai a <code>Terminal > Configure Tasks</code> e substitui os "args" por estes:</p>
+        <div class="code-box">
+            "args": [<br>
+            &nbsp;&nbsp;"-g", "${file}", <br>
+            &nbsp;&nbsp;"-x", "c", "${fileDirname}/lib/vc.c", "-x", "none",<br>
+            &nbsp;&nbsp;"-o", "${fileDirname}/main.exe",<br>
+            &nbsp;&nbsp;"-I", "C:/msys64/mingw64/include/opencv4",<br>
+            &nbsp;&nbsp;"-L", "C:/msys64/mingw64/lib",<br>
+            &nbsp;&nbsp;"-lopencv_core", "-lopencv_highgui", "-lopencv_imgproc", "-lopencv_videoio"<br>
+            ]
+        </div>
+    </section>
+
+    <section id="compilacao">
+        <h2>7. O Comando "Mestre" de Compilação</h2>
+        <p>Se quiseres compilar manualmente no terminal do VS Code:</p>
+        <div class="code-box">
+            <span class="cmd">g++</span> -g C:\VCTP\main.cpp <span class="flag">-x c</span> C:\VCTP\lib\vc.c <span class="flag">-x none</span> -o C:\VCTP\main.exe <br>
+            <span class="flag">-I</span> C:/msys64/mingw64/include/opencv4 <br>
+            <span class="flag">-L</span> C:/msys64/mingw64/lib <br>
+            <span class="flag">-l</span>opencv_core <span class="flag">-l</span>opencv_highgui <span class="flag">-l</span>opencv_imgproc <span class="flag">-l</span>opencv_videoio
+        </div>
+    </section>
+
+    <footer>
+        Guia VCTP Final - Configuração Completa e Testada
+    </footer>
+</main>
+
+</body>
+</html>
