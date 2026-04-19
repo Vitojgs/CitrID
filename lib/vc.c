@@ -310,7 +310,7 @@
 	}
 
 
-	int vc_write_image(char *filename, IVC *image)
+	int vc_write_image(const char *filename, IVC *image)
 	{
 		FILE *file = NULL;
 		unsigned char *tmp;
@@ -934,6 +934,7 @@ int vc_gray_to_binary_midpoint(IVC *src, IVC *dst, int kernel)
 
     return 1;
 }
+
 int vc_gray_to_binary_bersen(IVC *src, IVC *dst, int kernel)
 {
     int x, y, kx, ky, Cmin;
@@ -989,6 +990,7 @@ int vc_gray_to_binary_bersen(IVC *src, IVC *dst, int kernel)
 
     return 1;
 }
+
 int vc_gray_to_binary_niblack(IVC *src, IVC *dst, int kernel, float k)
 {
     int x, y, kx, ky;
@@ -1101,6 +1103,7 @@ int vc_binary_erode(IVC *src, IVC *dst, int kernel)
 
     return 1;
 }
+
 int vc_binary_dilate(IVC *src, IVC *dst, int kernel)
 {
     int x, y, kx, ky;
@@ -1204,7 +1207,7 @@ int vc_gray_mask(IVC *src, IVC *mask, IVC *dst) //func necessaria acho ex2brain
     return 1;
 }
 
-int vc_brain_segment(IVC *src, IVC *dst)
+/* int vc_brain_segment(IVC *src, IVC *dst)
 {
     IVC *th = NULL;
     IVC *er = NULL;
@@ -1257,7 +1260,7 @@ int vc_brain_segment(IVC *src, IVC *dst)
 
     return 1;
 }
-
+*/
 // Etiquetagem de blobs
 // src		: Imagem bin�ria de entrada
 // dst		: Imagem grayscale (ir� conter as etiquetas)
@@ -1576,8 +1579,6 @@ int vc_gray_histogram_show(IVC *src, IVC *dst)
     return 1;
 }
 
-
-
 int vc_gray_histogram_equalization(IVC *src, IVC *dst)
 {
     unsigned char *datasrc = (unsigned char *)src->data;
@@ -1618,7 +1619,6 @@ int vc_gray_histogram_equalization(IVC *src, IVC *dst)
 
     return 1;
 }
-
 
 int vc_gray_edge_prewitt(IVC *src, IVC *dst, float th)
 {
