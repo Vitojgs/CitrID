@@ -5,9 +5,10 @@
 #include <opencv4/opencv2/highgui.hpp>
 #include <opencv4/opencv2/videoio.hpp>
 
-#include "segmentacao.h"
-// #include "geometria.h"   // Pessoa 3 - calibre e categoria
-// #include "tracking.h"    // Pessoa 4 - contagem e tracking
+#include "segmentacao.h"   // Pessoa 1
+// #include "blobs.h"      // Pessoa 2 - labelling, filtros, blob_info
+// #include "geometria.h"  // Pessoa 3 - calibre e categoria
+// #include "tracking.h"   // Pessoa 4 - contagem acumulada e tracking
 
 int main(void) {
     const char* videofile = "video.avi";
@@ -31,6 +32,12 @@ int main(void) {
     }
 
     // --------------------------------------------------------
+    // PESSOA 2 - inicializar contexto de blobs
+    // --------------------------------------------------------
+    // BlobsCtx blobsCtx;
+    // vc_blobs_init(&blobsCtx, width, height);
+
+    // --------------------------------------------------------
     // PESSOA 4 - inicializar tracking e contagem acumulada
     // --------------------------------------------------------
     // TrackingCtx trackCtx;
@@ -44,35 +51,42 @@ int main(void) {
     while (capture.read(frame)) {
 
         // --------------------------------------------------------
-        // PESSOA 1 - segmentacao: devolve blobs validos (so laranjas)
+        // PESSOA 1 - segmentacao
+        // Recebe: frame BGR
+        // Produz: segCtx.imageMask1 (mascara binaria limpa)
         // --------------------------------------------------------
-        OVC *blobs     = NULL;
-        int  nlabels   = 0;
-        vc_segmentacao(&segCtx, frame, &blobs, &nlabels);
+        vc_segmentacao(&segCtx, frame);
+
+        // --------------------------------------------------------
+        // PESSOA 2 - labelling e filtragem
+        // Recebe: segCtx.imageMask1
+        // Produz: OVC *blobs, int nlabels (so laranjas validas)
+        // --------------------------------------------------------
+        OVC *blobs   = NULL;
+        int  nlabels = 0;
+        // vc_blobs(&blobsCtx, segCtx.imageMask1, &blobs, &nlabels);
 
         // --------------------------------------------------------
         // PESSOA 4 - tracking e contagem acumulada
+        // Recebe: blobs, nlabels
+        // Produz: total_laranjas atualizado
         // --------------------------------------------------------
         // vc_tracking_update(&trackCtx, blobs, nlabels, &total_laranjas);
 
         // --------------------------------------------------------
-        // PESSOA 3 - calibre e categoria de cada laranja
+        // PESSOA 3 - calibre, categoria e overlay por laranja
+        // Recebe: frame, blobs, nlabels
+        // Produz: texto desenhado sobre o frame
         // --------------------------------------------------------
         // for (int i = 0; i < nlabels; i++) {
-        //     int calibre       = vc_calcular_calibre(blobs[i]);
-        //     const char *categ = vc_calcular_categoria(blobs[i]);
-        //     vc_overlay_laranja(frame, blobs[i], calibre, categ);
+        //     vc_overlay_laranja(frame, blobs[i]);
         // }
 
         // --------------------------------------------------------
-        // DEBUG - overlay provisorio (remover quando Pessoa 3 integrar)
+        // PESSOA 4 - overlay da contagem acumulada no topo do frame
         // --------------------------------------------------------
-        vc_segmentacao_debug_overlay(frame, blobs, nlabels);
-
-        // --------------------------------------------------------
-        // PESSOA 4 - mostrar contagem acumulada no frame
-        // --------------------------------------------------------
-        // std::string str = std::string("TOTAL: ").append(std::to_string(total_laranjas));
+        // std::string str = std::string("TOTAL: ")
+        //                    .append(std::to_string(total_laranjas));
         // cv::putText(frame, str, cv::Point(10, 20),
         //     cv::FONT_HERSHEY_SIMPLEX, 0.6, cv::Scalar(0,0,0), 2);
         // cv::putText(frame, str, cv::Point(10, 20),
@@ -85,7 +99,6 @@ int main(void) {
         cv::imshow("DEBUG - Mascara",
             cv::Mat(height, width, CV_8UC1, segCtx.imageMask1->data));
 
-        // Libertar blobs apos uso em cada frame
         if (blobs != NULL) { free(blobs); blobs = NULL; }
 
         if (cv::waitKey(1) == 'q') break;
@@ -95,6 +108,8 @@ int main(void) {
     // LIMPEZA
     // --------------------------------------------------------
     vc_segmentacao_free(&segCtx);
+    // vc_blobs_free(&blobsCtx);   // Pessoa 2
+
     capture.release();
     cv::destroyAllWindows();
     return 0;
