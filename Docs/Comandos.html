@@ -33,7 +33,7 @@
             <h2>Comandos de Compilação (g++)</h2>
             
             <h3>Para testar a sua parte:</h3>
-            <pre>g++ main.cpp segmentacao.cpp lib/vc.c -o main -I/usr/include/opencv4 -lopencv_core -lopencv_highgui -lopencv_videoio -lopencv_imgproc -std=c++17 -lm</pre>
+            <pre>g++ main.cpp segmentacao.cpp lib/vc.c -o main -I C:/msys64/mingw64/include/opencv4 -I C:/msys64/mingw64/include/opencv4/opencv2 -L C:/msys64/mingw64/lib -lopencv_core -lopencv_highgui -lopencv_videoio -lopencv_imgproc -std=c++17 -lm</pre>
             
             <h3>Para compilar com todos os módulos (Integração):</h3>
             <pre>g++ main.cpp segmentacao.cpp blobs.cpp geometria.cpp tracking.cpp lib/vc.c -o main -I/usr/include/opencv4 -lopencv_core -lopencv_highgui -lopencv_videoio -lopencv_imgproc -std=c++17 -lm</pre>
