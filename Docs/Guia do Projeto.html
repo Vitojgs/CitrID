@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<title>Guia do Projeto - Visão por Computador</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 40px;
+    line-height: 1.6;
+}
+h1, h2, h3 {
+    color: #2c3e50;
+}
+.section {
+    margin-bottom: 40px;
+}
+.task {
+    margin-left: 20px;
+}
+.tip {
+    background-color: #f4f6f7;
+    border-left: 4px solid #3498db;
+    padding: 10px;
+    margin: 10px 0;
+}
+.result {
+    background-color: #eafaf1;
+    border-left: 4px solid #2ecc71;
+    padding: 10px;
+    margin: 10px 0;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Guia do Projeto - Visão por Computador</h1>
+
+<p>Este guia descreve a organização do projeto por etapas, incluindo tarefas, decisões técnicas e justificações para cada abordagem adotada.</p>
+
+<div class="section">
+<h2>Etapa 1 — Estudo do vídeo e Segmentação</h2>
+
+<h3>Tarefa 1 — Estudo do vídeo</h3>
+<div class="task">
+<p>Visualizar várias frames do vídeo para identificar características relevantes: cor das laranjas, fundo, reflexos e objetos semelhantes.</p>
+
+<div class="tip">
+A análise inicial é essencial para evitar escolhas erradas mais tarde. Sem compreender o vídeo, os thresholds serão arbitrários.
+</div>
+
+<div class="result">
+Definir que o problema deve ser resolvido com base em cor (e não apenas intensidade).
+</div>
+</div>
+
+<h3>Tarefa 2 — Teste de canais RGB</h3>
+<div class="task">
+<p>Utilizar funções de extração de canais RGB para observar diferenças entre vermelho, verde e azul.</p>
+
+<div class="tip">
+Os canais RGB ajudam a perceber se existe separação natural entre objeto e fundo, mas raramente são suficientes em cenários com iluminação variável.
+</div>
+
+<div class="result">
+Conclusão de que RGB não é robusto para este problema.
+</div>
+</div>
+
+<h3>Tarefa 3 — Conversão para HSV</h3>
+<div class="task">
+<p>Converter a imagem RGB para HSV utilizando a função apropriada.</p>
+
+<div class="tip">
+HSV separa cor (Hue) de intensidade (Value), tornando a segmentação mais robusta em presença de reflexos.
+</div>
+
+<div class="result">
+Escolha do espaço de cor HSV como base da solução.
+</div>
+</div>
+
+<h3>Tarefa 4 — Segmentação HSV</h3>
+<div class="task">
+<p>Aplicar segmentação com intervalos de Hue, Saturation e Value ajustados ao tom das laranjas.</p>
+
+<div class="tip">
+O parâmetro mais importante é o Hue. Saturation ajuda a eliminar o fundo branco, e Value remove regiões muito escuras.
+</div>
+
+<div class="result">
+Imagem binária onde as laranjas estão destacadas.
+</div>
+</div>
+
+<h3>Tarefa 5 — Operações morfológicas</h3>
+<div class="task">
+<p>Aplicar abertura e fecho para remover ruído e preencher falhas.</p>
+
+<div class="tip">
+Abertura remove pequenos pontos isolados. Fecho corrige falhas dentro dos objetos.
+</div>
+
+<div class="result">
+Máscara limpa e pronta para análise.
+</div>
+</div>
+
+</div>
+
+<div class="section">
+<h2>Etapa 2 — Histogramas, Equalização e Blobs</h2>
+
+<h3>Tarefa 6 — Histogramas</h3>
+<div class="task">
+<p>Gerar histogramas para analisar a distribuição de intensidades ou cores.</p>
+
+<div class="tip">
+Os histogramas permitem justificar a escolha dos thresholds em vez de usar tentativa e erro.
+</div>
+
+<div class="result">
+Escolha fundamentada de thresholds.
+</div>
+</div>
+
+<h3>Tarefa 7 — Equalização</h3>
+<div class="task">
+<p>Testar equalização de histograma para melhorar contraste.</p>
+
+<div class="tip">
+Nem sempre melhora o resultado. Em imagens coloridas, pode distorcer a informação cromática.
+</div>
+
+<div class="result">
+Decisão de usar ou descartar equalização (normalmente descartar).
+</div>
+</div>
+
+<h3>Tarefa 8 — Conversão para 1 canal</h3>
+<div class="task">
+<p>Converter a máscara RGB binária para imagem de um canal.</p>
+
+<div class="tip">
+As funções de blob labelling requerem imagens binárias de um canal.
+</div>
+
+<div class="result">
+Imagem pronta para etiquetagem.
+</div>
+</div>
+
+<h3>Tarefa 9 — Etiquetagem de blobs</h3>
+<div class="task">
+<p>Identificar objetos individuais na imagem.</p>
+
+<div class="tip">
+Cada blob corresponde a um objeto candidato a laranja.
+</div>
+
+<div class="result">
+Lista de blobs identificados.
+</div>
+</div>
+
+<h3>Tarefa 10 — Extração de propriedades</h3>
+<div class="task">
+<p>Obter área, perímetro, bounding box e centro de gravidade.</p>
+
+<div class="tip">
+Estas métricas são essenciais para filtrar objetos e classificá-los.
+</div>
+
+<div class="result">
+Dados geométricos completos por objeto.
+</div>
+</div>
+
+</div>
+
+<div class="section">
+<h2>Etapa 3 — Geometria, Calibre e Categoria</h2>
+
+<h3>Tarefa 11 — Filtragem de objetos</h3>
+<div class="task">
+<p>Eliminar objetos que não correspondem a laranjas.</p>
+
+<div class="tip">
+Usar critérios como área, forma e proporções evita falsos positivos.
+</div>
+
+<div class="result">
+Lista de laranjas válidas.
+</div>
+</div>
+
+<h3>Tarefa 12 — Circularidade</h3>
+<div class="task">
+<p>Calcular circularidade para avaliar a forma.</p>
+
+<div class="tip">
+Valores próximos de 1 indicam formas circulares, características das laranjas.
+</div>
+
+<div class="result">
+Métrica de forma para cada objeto.
+</div>
+</div>
+
+<h3>Tarefa 13 — Diâmetro equivalente</h3>
+<div class="task">
+<p>Calcular o diâmetro com base na área.</p>
+
+<div class="tip">
+Este método é mais robusto do que usar apenas largura ou altura.
+</div>
+
+<div class="result">
+Diâmetro em píxeis.
+</div>
+</div>
+
+<h3>Tarefa 14 — Conversão para milímetros</h3>
+<div class="task">
+<p>Converter píxeis para unidades reais.</p>
+
+<div class="tip">
+A escala fornecida no enunciado deve ser usada diretamente.
+</div>
+
+<div class="result">
+Diâmetro real.
+</div>
+</div>
+
+<h3>Tarefa 15 — Calibre</h3>
+<div class="task">
+<p>Classificar o tamanho da laranja segundo normas.</p>
+
+<div class="tip">
+A classificação deve seguir intervalos definidos, não valores arbitrários.
+</div>
+
+<div class="result">
+Código de calibre atribuído.
+</div>
+</div>
+
+<h3>Tarefa 16 — Categoria</h3>
+<div class="task">
+<p>Determinar qualidade da laranja (Extra, I, II).</p>
+
+<div class="tip">
+Basear em forma, uniformidade e defeitos visuais. É uma aproximação computacional.
+</div>
+
+<div class="result">
+Categoria atribuída.
+</div>
+</div>
+
+</div>
+
+<div class="section">
+<h2>Etapa 4 — Integração Final e Tracking</h2>
+
+<h3>Tarefa 17 — Pipeline completo</h3>
+<div class="task">
+<p>Integrar todas as etapas num fluxo contínuo.</p>
+
+<div class="tip">
+O pipeline deve ser organizado e sequencial para facilitar debugging.
+</div>
+
+<div class="result">
+Sistema funcional.
+</div>
+</div>
+
+<h3>Tarefa 18 — Contagem na frame</h3>
+<div class="task">
+<p>Contar objetos válidos por frame.</p>
+
+<div class="result">
+Número de laranjas atual.
+</div>
+</div>
+
+<h3>Tarefa 19 — Tracking</h3>
+<div class="task">
+<p>Associar objetos entre frames.</p>
+
+<div class="tip">
+Evita contar a mesma laranja várias vezes.
+</div>
+
+<div class="result">
+Identificação consistente dos objetos.
+</div>
+</div>
+
+<h3>Tarefa 20 — Contagem total</h3>
+<div class="task">
+<p>Manter contagem acumulada.</p>
+
+<div class="result">
+Número total de laranjas.
+</div>
+</div>
+
+<h3>Tarefa 21 — Visualização</h3>
+<div class="task">
+<p>Desenhar informação sobre o vídeo.</p>
+
+<div class="tip">
+A visualização deve ser clara e não sobrecarregar a imagem.
+</div>
+
+<div class="result">
+Interface final com dados.
+</div>
+</div>
+
+<h3>Tarefa 22 — Testes finais</h3>
+<div class="task">
+<p>Executar e ajustar parâmetros.</p>
+
+<div class="tip">
+A afinação é essencial para reduzir erros.
+</div>
+
+<div class="result">
+Sistema validado.
+</div>
+</div>
+
+</div>
+
+<div class="section">
+<h2>Conclusão</h2>
+<p>O projeto segue uma abordagem estruturada baseada em segmentação por cor, análise morfológica, extração de características e classificação. As decisões técnicas foram fundamentadas em testes experimentais e observação do comportamento do sistema.</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<title>Guia do Projeto - Visão por Computador</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 40px;
+}
+
+h1, h2 {
+    color: #2c3e50;
+}
+
+svg {
+    border: 1px solid #ccc;
+    margin: 20px 0;
+}
+
+/* base */
+.box {
+    stroke: #2c3e50;
+    stroke-width: 1;
+}
+
+/* cores */
+.seg { fill: #d6eaf8; }
+.ana { fill: #fdebd0; }
+.dec { fill: #d5f5e3; }
+
+/* animação */
+.hidden {
+    opacity: 0.15;
+    transition: 0.4s;
+}
+
+.show {
+    opacity: 1 !important;
+    stroke-width: 2;
+}
+
+/* botões */
+.controls {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+}
+
+button {
+    padding: 10px;
+    margin: 5px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="controls">
+<button onclick="nextStep()">Seguinte</button>
+<button onclick="resetSteps()">Reset</button>
+</div>
+
+<h1>Pipeline Interativo - Visão por Computador</h1>
+
+<h2>Pipeline Completo</h2>
+
+<svg width="100%" height="450">
+
+<!-- Segmentação -->
+<rect class="box seg step1 hidden" x="40" y="60" width="120" height="50"/>
+<text x="100" y="90">Frame</text>
+
+<rect class="box seg step2 hidden" x="180" y="60" width="140" height="50"/>
+<text x="250" y="90">RGB → HSV</text>
+
+<rect class="box seg step3 hidden" x="340" y="60" width="160" height="50"/>
+<text x="420" y="80">Segmentação</text>
+<text x="420" y="100">H[10-40]</text>
+
+<rect class="box seg step4 hidden" x="520" y="60" width="140" height="50"/>
+<text x="590" y="90">Open/Close</text>
+
+<rect class="box seg step5 hidden" x="680" y="60" width="140" height="50"/>
+<text x="750" y="90">Blobs</text>
+
+<!-- Análise -->
+<rect class="box ana step6 hidden" x="140" y="160" width="180" height="70"/>
+<text x="230" y="185">Área</text>
+<text x="230" y="205">A = pixels</text>
+
+<rect class="box ana step6 hidden" x="360" y="160" width="180" height="70"/>
+<text x="450" y="185">Perímetro</text>
+
+<rect class="box ana step6 hidden" x="580" y="160" width="180" height="70"/>
+<text x="670" y="185">Centro</text>
+
+<rect class="box ana step7 hidden" x="140" y="270" width="200" height="70"/>
+<text x="240" y="295">Diâmetro</text>
+<text x="240" y="315">2√(A/π)</text>
+
+<rect class="box ana step8 hidden" x="360" y="270" width="200" height="70"/>
+<text x="460" y="295">mm</text>
+<text x="460" y="315">px*(55/280)</text>
+
+<rect class="box ana step9 hidden" x="580" y="270" width="220" height="70"/>
+<text x="690" y="295">Circularidade</text>
+<text x="690" y="315">4πA/P²</text>
+
+<!-- Decisão -->
+<rect class="box dec step10 hidden" x="260" y="360" width="180" height="70"/>
+<text x="350" y="390">Calibre</text>
+
+<rect class="box dec step11 hidden" x="500" y="360" width="200" height="70"/>
+<text x="600" y="390">Categoria</text>
+
+</svg>
+
+<h2>Tracking</h2>
+
+<svg width="100%" height="200">
+
+<rect class="box ana step12 hidden" x="100" y="60" width="200" height="60"/>
+<text x="200" y="90">Centros t-1</text>
+
+<rect class="box ana step12 hidden" x="400" y="60" width="200" height="60"/>
+<text x="500" y="90">Centros t</text>
+
+<rect class="box dec step13 hidden" x="250" y="140" width="200" height="60"/>
+<text x="350" y="170">Distância</text>
+
+<rect class="box dec step14 hidden" x="500" y="140" width="200" height="60"/>
+<text x="600" y="170">Match / Novo ID</text>
+
+</svg>
+
+<h2>Legenda</h2>
+<ul>
+<li>Azul: Segmentação</li>
+<li>Laranja: Análise</li>
+<li>Verde: Decisão</li>
+</ul>
+
+<script>
+
+let step = 1;
+const maxSteps = 14;
+
+function nextStep() {
+    document.querySelectorAll(".step" + step).forEach(el => {
+        el.classList.remove("hidden");
+        el.classList.add("show");
+    });
+    if (step < maxSteps) step++;
+}
+
+function resetSteps() {
+    document.querySelectorAll(".box").forEach(el => {
+        el.classList.add("hidden");
+        el.classList.remove("show");
+    });
+    step = 1;
+    window.scrollTo(0,0);
+}
+
+window.onload = resetSteps;
+
+</script>
+
+</body>
+</html>
