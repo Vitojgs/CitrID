@@ -10,7 +10,12 @@
 
 #define VC_DEBUG
 
+#ifndef VC_H
+#define VC_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //                   ESTRUTURA DE UMA IMAGEM
@@ -38,7 +43,7 @@ IVC *vc_image_free(IVC *image);
 // FUN��ES: LEITURA E ESCRITA DE IMAGENS (PBM, PGM E PPM)
 IVC *vc_read_image(char *filename);
 
-int vc_write_image(char *filename, IVC *image);
+int vc_write_image(const char *filename, IVC *image);
 
 // Protótipos para extração de canais RGB
 int vc_rgb_get_red_gray(IVC *src);
@@ -99,3 +104,9 @@ int vc_gray_histogram_show(IVC *src, IVC *dst);
 int vc_gray_histogram_equalization(IVC *src, IVC *dst);
 
 int vc_gray_edge_prewitt(IVC *src, IVC *dst, float th);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif

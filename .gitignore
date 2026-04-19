@@ -3,3 +3,11 @@
 *.obj
 video.avi
 .vscode/
+.comandos
+
+
+# Ignorar backups do main
+main_*.cpp
+main_a_verificar.cpp
+main_old.cpp
+

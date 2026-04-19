@@ -4,7 +4,7 @@
 	//             ENGENHARIA DE SISTEMAS INFORM�TICOS
 	//                    VIS�O POR COMPUTADOR
 	//
-	//             [  DUARTE DUQUE - dduque@ipca.pt  ]
+	//             [   ]
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	// Desabilita (no MSVC++) warnings de fun��es n�o seguras (fopen, sscanf, etc...)
