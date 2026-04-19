@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html lang="pt-pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Comandos Git e Compilação</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; background-color: #f4f7f6; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1, h2 { color: #2c3e50; }
+        code { background: #eee; padding: 2px 4px; border-radius: 4px; font-family: monospace; }
+        pre { background: #272822; color: #f8f8f2; padding: 15px; border-radius: 5px; overflow-x: auto; }
+        .section { margin-bottom: 30px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cheat Sheet: Git & Compilação</h1>
+        
+        <div class="section">
+            <h2>Comandos Git Essenciais</h2>
+            <ul>
+                <li><code>git status</code> - Verifica o estado dos ficheiros.</li>
+                <li><code>git add .</code> - Adiciona todas as alterações ao índice.</li>
+                <li><code>git commit -m "mensagem"</code> - Regista as alterações com uma mensagem.</li>
+                <li><code>git push origin [branch]</code> - Envia commits para o servidor.</li>
+                <li><code>git pull</code> - Atualiza o repositório local.</li>
+                <li><code>git rm --cached [ficheiro]</code> - Remove um ficheiro do Git sem apagar o ficheiro localmente.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Comandos de Compilação (g++)</h2>
+            
+            <h3>Para testar a sua parte:</h3>
+            <pre>g++ main.cpp segmentacao.cpp lib/vc.c -o main -I/usr/include/opencv4 -lopencv_core -lopencv_highgui -lopencv_videoio -lopencv_imgproc -std=c++17 -lm</pre>
+            
+            <h3>Para compilar com todos os módulos (Integração):</h3>
+            <pre>g++ main.cpp segmentacao.cpp blobs.cpp geometria.cpp tracking.cpp lib/vc.c -o main -I/usr/include/opencv4 -lopencv_core -lopencv_highgui -lopencv_videoio -lopencv_imgproc -std=c++17 -lm</pre>
+        </div>
+    </div>
+</body>
+</html>
