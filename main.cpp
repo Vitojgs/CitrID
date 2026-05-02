@@ -1,9 +1,10 @@
 #include <iostream>
 #include <string>
-#include <opencv4/opencv2/opencv.hpp>
-#include <opencv4/opencv2/core.hpp>
-#include <opencv4/opencv2/highgui.hpp>
-#include <opencv4/opencv2/videoio.hpp>
+#include <opencv2/opencv.hpp>
+#include <opencv2/core.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/videoio.hpp>
+#include "lib/vc.h"
 
 #include "segmentacao.h"   // Pessoa 1
 // #include "blobs.h"      // Pessoa 2 - labelling, filtros, blob_info

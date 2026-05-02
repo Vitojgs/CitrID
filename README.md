@@ -71,12 +71,16 @@ Visualização original com:
 
 ## Tech Stack
 
-| Componente | Tecnologia |
-|-----------|-----------|
-| Linguagem | C++ / C |
-| Visão Computacional | OpenCV 4.x |
-| Biblioteca de Imagem | IVC |
-| Compilador | MinGW-w64 (MSYS2) |
+| Componente           | Tecnologia        |
+|----------------------|-------------------|
+| Linguagem            | C++ / C           |
+|----------------------|-------------------|
+| Visão Computacional  | OpenCV 4.x        |
+|----------------------|-------------------|
+| Biblioteca de Imagem | IVC               |
+|----------------------|-------------------|
+| Compilador           | MinGW-w64 (MSYS2) |
+|----------------------|-------------------|
 
 ---
 
