@@ -42,7 +42,7 @@ int vc_rgb_get_green_gray(IVC *src);
 
 int vc_rgb_get_blue_gray(IVC *src);
 
-int vc_rgb_to_hsv_2(IVC *src, IVC *dst);
+int vc_rgb_to_hsv(IVC *src, IVC *dst);
 
 int vc_hsv_segmentation(IVC *src, IVC *dst, int hmin, int hmax, int smin, int smax, int vmin, int vmax);
 

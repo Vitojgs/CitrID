@@ -404,7 +404,7 @@
 		return 1;
 	}
 
-	int vc_rgb_to_hsv_2(IVC *src, IVC *dst)
+	int vc_rgb_to_hsv(IVC *src, IVC *dst)
 {
 	unsigned char *datasrc = (unsigned char *)src->data;
 	unsigned char *datadst = (unsigned char *)dst->data;
