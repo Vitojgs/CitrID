@@ -1,13 +1,47 @@
-*.exe
+# Compilados e binaries
+trabpratico
+trabpratico.exe
 *.o
 *.obj
-video.avi
-.vscode/
-.comandos
+*.exe
+*.dll
+*.so
+*.dylib
+vc.o
 
+# CMake
+CMakeLists.txt.user
+cmake-build-*/
+build/
+cmake_install.cmake
+Makefile*
 
-# Ignorar backups do main
-main_*.cpp
-main_a_verificar.cpp
-main_old.cpp
+# Diretório de build (se houver)
+Debug/
+Release/
 
+# Ficheiros do VSCode
+.vscode/*.json
+!.vscode/launch.json
+!.vscode/tasks.json
+!.vscode/c_cpp_properties.json
+
+# Ficheiros do IDE
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Docker
+*.dockerignore
+*.image
+
+# Logs
+*.log
+
+# Vídeo original (opcional)
+# video.avi
+
+# Ficheiros temporários
+*.tmp
+*.bak
