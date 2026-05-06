@@ -1,0 +1,75 @@
+# Makefile para Windows (VS Code + MSYS2/MinGW)
+# Instituto Politécnico do Cávado do Ave - 2025/2026
+#
+# Este Makefile assume:
+# - OpenCV instalado (ver configuração abaixo)
+# - MinGW/MSYS2 instalado
+# - Variável de ambiente OPENCV_DIR apontar para o OpenCV
+#
+# Configuração do OpenCV no Windows:
+# 1. Baixar OpenCV de https://opencv.org/releases/
+# 2. Extrair para C:\opencv
+# 3. Criar variável de ambiente OPENCV_DIR=C:\opencv\build\x64\mingw
+
+# Compilador
+CXX := g++
+CC := gcc
+
+# Flags
+CXXFLAGS := -Wall -Wextra -std=c++17
+CFLAGS := -Wall -Wextra
+
+# OpenCV (ajusta estes caminhos conforme a tua instalação)
+OPENCV_DIR ?= C:\opencv\build\x64\mingw
+OPENCV_INCLUDE := -I$(OPENCV_DIR)\include
+OPENCV_LIB := -L$(OPENCV_DIR)\lib
+OPENCV_LIBS := -lopencv_world4900 -lm
+
+# Diretórios
+SRC_DIR := TrabPratico
+LIB_DIR := lib
+
+# Ficheiros
+MAIN_SRC := $(SRC_DIR)\main.cpp
+LIB_SRC := $(LIB_DIR)\vc.c
+TARGET := trabpratico.exe
+
+# Include
+INCLUDES := -I $(LIB_DIR) $(OPENCV_INCLUDE)
+
+# Libraries
+LIBS := $(OPENCV_LIB) $(OPENCV_LIBS)
+
+# Targets
+.PHONY: all clean run help
+
+all: $(TARGET)
+
+$(TARGET): $(MAIN_SRC) $(LIB_SRC)
+	$(CC) $(CFLAGS) -c -o vc.o $(LIB_SRC) $(INCLUDES)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(MAIN_SRC) vc.o $(INCLUDES) $(LIBS)
+	del /Q vc.o
+
+clean:
+	del /Q $(TARGET) vc.o 2>nul
+
+run: $(TARGET)
+	cd $(SRC_DIR)
+	..\$(TARGET)
+
+help:
+	@echo Makefile para Windows - VCTP
+	@echo.
+	@echo Requisitos:
+	@echo   - MinGW/MSYS2 instalado
+	@echo   - OpenCV configurado
+	@echo   - Variável OPENCV_DIR definida
+	@echo.
+	@echo Configuracao:
+	@echo   OPENCV_DIR = %OPENCV_DIR%
+	@echo.
+	@echo Targets:
+	@echo   make       - Compilar
+	@echo   make clean - Limpar
+	@echo   make run   - Executar
+	@echo   make help  - Ajuda
