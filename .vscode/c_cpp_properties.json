@@ -1,0 +1,22 @@
+{
+  "configurations": [
+    {
+      "name": "windows-msvc-opencv-x64",
+      "includePath": [
+        "${workspaceFolder}/**",
+        "${workspaceFolder}/lib",
+        "C:/Users/tiago/Documents/opencv/build/include"
+      ],
+      "defines": [
+        "_DEBUG",
+        "UNICODE",
+        "_UNICODE"
+      ],
+      "compilerPath": "cl.exe",
+      "intelliSenseMode": "windows-msvc-x64",
+      "cStandard": "c17",
+      "cppStandard": "c++17"
+    }
+  ],
+  "version": 4
+}

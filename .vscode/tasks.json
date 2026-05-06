@@ -1,0 +1,32 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Compilar OpenCV",
+      "type": "shell",
+      "command": "cl",
+      "args": [
+        "/EHsc",
+        "/O2",
+        "/std:c++17",
+        "/I", "C:/Users/tiago/Documents/opencv/build/include",
+        "/I", "${workspaceFolder}",
+        "/I", "${workspaceFolder}/lib",
+        "${workspaceFolder}/main.cpp",
+        "${workspaceFolder}/lib/vc.c",
+        "/Fe:${workspaceFolder}/CitrID.exe",
+        "/link",
+        "/LIBPATH:C:/Users/tiago/Documents/opencv/build/x64/vc16/lib",
+        "opencv_world4130.lib"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": "$msCompile"
+    }
+  ]
+}
