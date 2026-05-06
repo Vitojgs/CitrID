@@ -14,7 +14,6 @@ CMakeLists.txt.user
 cmake-build-*/
 build/
 cmake_install.cmake
-Makefile*
 
 # Diretório de build (se houver)
 Debug/
