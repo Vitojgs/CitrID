@@ -28,6 +28,7 @@ Release/
 # Docker
 *.dockerignore
 *.image
+Dockerfile
 
 # Logs
 *.log
