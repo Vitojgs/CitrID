@@ -2032,6 +2032,7 @@ int vc_gray_lowpass_mean_filter(IVC* src, IVC* dst, int kernelsize)
             datadst[pos] = (unsigned char)(sum / (float)count);
         }
     }
+    return 0;
 }
 
 int vc_gray_lowpass_median_filter(IVC* src, IVC* dst, int kernelsize)
@@ -2096,6 +2097,7 @@ int vc_gray_lowpass_median_filter(IVC* src, IVC* dst, int kernelsize)
             datadst[pos] = neighbors[count / 2];
         }
     }
+    return 0;
 }
 
 int vc_gray_lowpass_gaussian_filter(IVC* src, IVC* dst)

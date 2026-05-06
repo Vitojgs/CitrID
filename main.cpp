@@ -311,7 +311,7 @@ int main(void) {
         //    melhorando a circularidade para 0.70-0.80)
         // -------------------------------------------------------
         vc_binary_open (img_seg, img_tmp, 7);
-        vc_binary_close(img_tmp, img_seg, 25);
+        vc_binary_close(img_tmp, img_seg, 75);
 
         // -------------------------------------------------------
         // 5. Blob labelling + metricas
@@ -511,7 +511,7 @@ int main(void) {
         cv::imshow("VC - BINARIO", bin_disp);
         cv::imshow("VC - VIDEO",   frame);
 
-        key = cv::waitKey(1);
+        key = cv::waitKey(40);
     }
 
     vc_timer();
