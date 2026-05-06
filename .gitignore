@@ -9,12 +9,6 @@ trabpratico.exe
 *.dylib
 vc.o
 
-# CMake
-CMakeLists.txt.user
-cmake-build-*/
-build/
-cmake_install.cmake
-
 # Diretório de build (se houver)
 Debug/
 Release/
