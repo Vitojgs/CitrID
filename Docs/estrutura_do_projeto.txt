@@ -1,0 +1,13 @@
+VCTP/
+├── TrabPratico/
+│ ├── CodigoExemplo.cpp
+│ └── video.avi
+├── lib/
+│ ├── vc.c
+│ └── vc.h
+└── .vscode/
+├── tasks.json
+├── launch.json
+├── c_cpp_properties.json
+└── build-active.ps1
+└── build-debug-cpp.ps1
