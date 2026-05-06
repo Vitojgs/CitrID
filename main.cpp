@@ -17,10 +17,7 @@
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/videoio.hpp>
-
-extern "C" {
 #include "lib/vc.h"
-}
 
 // ---------------------------------------------------------------
 // Calibracao (enunciado: 280px = 55mm)
@@ -310,7 +307,7 @@ int main(void) {
         //    no blob; um kernel grande garante que ficam fechados,
         //    melhorando a circularidade para 0.70-0.80)
         // -------------------------------------------------------
-        vc_binary_open (img_seg, img_tmp, 7);
+        vc_binary_open (img_seg, img_tmp, 12);
         vc_binary_close(img_tmp, img_seg, 25);
 
         // -------------------------------------------------------
@@ -511,7 +508,7 @@ int main(void) {
         cv::imshow("VC - BINARIO", bin_disp);
         cv::imshow("VC - VIDEO",   frame);
 
-        key = cv::waitKey(25);
+        key = cv::waitKey(1);
     }
 
     vc_timer();

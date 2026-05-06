@@ -1,102 +1,96 @@
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//           INSTITUTO POLITÉCNICO DO CÁVADO E DO AVE
+//                          2025/2026
+//             ENGENHARIA DE SISTEMAS INFORMÁTICOS
+//                    VISÃO POR COMPUTADOR
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 #define VC_DEBUG
-
-#ifndef VC_H
-#define VC_H
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //                   ESTRUTURA DE UMA IMAGEM
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-
 typedef struct {
-	unsigned char *data;
+	unsigned char* data;
 	int width, height;
-	int channels;			// Bin�rio/Cinzentos=1; RGB=3
-	int levels;				// Bin�rio=1; Cinzentos [1,255]; RGB [1,255]
+	int channels;			// Binário/Cinzentos=1; RGB=3
+	int levels;				// Binário=1; Cinzentos [1,255]; RGB [1,255]
 	int bytesperline;		// width * channels
 } IVC;
 
-
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//                    PROT�TIPOS DE FUN��ES
+//                    ESTRUTURA DE UM BLOB
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-// FUN��ES: ALOCAR E LIBERTAR UMA IMAGEM
-IVC *vc_image_new(int width, int height, int channels, int levels);
-
-IVC *vc_image_free(IVC *image);
-
-// FUN��ES: LEITURA E ESCRITA DE IMAGENS (PBM, PGM E PPM)
-IVC *vc_read_image(char *filename);
-
-int vc_write_image(const char *filename, IVC *image);
-
-// Protótipos para extração de canais RGB
-int vc_rgb_get_red_gray(IVC *src);
-
-int vc_rgb_get_green_gray(IVC *src);
-
-int vc_rgb_get_blue_gray(IVC *src);
-
-int vc_rgb_to_hsv(IVC *src, IVC *dst);
-
-int vc_hsv_segmentation(IVC *src, IVC *dst, int hmin, int hmax, int smin, int smax, int vmin, int vmax);
-
-int vc_scale_gray_to_rgb(IVC *src, IVC *dst);
-
-int vc_scale_gray_to_rgb2(IVC *src, IVC *dst);
-
-int vc_pet_activity(IVC *image);
-
-int vc_gray_to_binary(IVC *src, IVC *dst, int threshold);
-
-int vc_gray_to_binary_range(IVC *src, IVC *dst, int thresholdmin, int thresholdmax, int mode);
-
-int vc_gray_to_binary_midpoint(IVC *src, IVC *dst, int kernel);
-
-int vc_gray_to_binary_bersen(IVC *src, IVC *dst, int kernel);
-
-int vc_gray_to_binary_niblack(IVC *src, IVC *dst, int kernel, float k);
-
-int vc_binary_erode(IVC *src, IVC *dst, int kernel);
-
-int vc_binary_dilate(IVC *src, IVC *dst, int kernel);
-
-int vc_binary_open(IVC *src, IVC *dst, int kernel);
-
-int vc_binary_close(IVC *src, IVC *dst, int kernel);
-
-//int vc_ex2brain (IVC *src, IVC *dst, int kernel);
-int vc_brain_segment(IVC *src, IVC *dst);
-
-int vc_gray_mask(IVC *src, IVC *mask, IVC *dst);
-
 
 typedef struct {
 	int x, y, width, height;	// Caixa Delimitadora (Bounding Box)
-	int area;					// �rea
+	int area;					// Área
 	int xc, yc;					// Centro-de-massa
-	int perimeter;				// Per�metro
+	int perimeter;				// Perímetro
 	int label;					// Etiqueta
 } OVC;
 
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//                    PROTÓTIPOS DE FUNÇÕES
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-int vc_binary_blob_info(IVC *src, OVC *blobs, int nblobs);
+// FUNÇÕES: ALOCAR E LIBERTAR UMA IMAGEM
+IVC* vc_image_new(int width, int height, int channels, int levels);
+IVC* vc_image_free(IVC* image);
 
-OVC* vc_binary_blob_labelling(IVC *src, IVC *dst, int *nlabels);
+// FUNÇÕES: LEITURA E ESCRITA DE IMAGENS (PBM, PGM E PPM)
+IVC* vc_read_image(char* filename);
+int vc_write_image(char* filename, IVC* image);
 
-int vc_gray_histogram_show(IVC *src, IVC *dst);
+//VC4
+int vc_gray_negative(IVC* srcdst);
+int vc_rgb_negative(IVC* srcdst);
+int vc_rgb_get_red_gray(IVC* srcdst);
+int vc_rgb_get_green_gray(IVC* srcdst);
+int vc_rgb_get_blue_gray(IVC* srcdst);
+int vc_rgb_to_gray(IVC* src, IVC* dst);
+int vc_rgb_to_hsv(IVC* src, IVC* dst);
+int vc_hsv_segmentation(IVC* src, IVC* dst, int hmin, int hmax, int smin, int smax, int vmin, int vmax);
+int vc_scale_gray_to_rgb(IVC* src, IVC* dst);
 
-int vc_gray_histogram_equalization(IVC *src, IVC *dst);
+//VC_EX
+int vc_count_white_pixels(IVC* dst);
 
-int vc_gray_edge_prewitt(IVC *src, IVC *dst, float th);
+//VC5
+int vc_gray_to_binary(IVC* src, IVC* dst, int threshold);
+int vc_gray_to_binary_global_mean(IVC* src, IVC* dst);
+int vc_gray_to_binary_midpoint(IVC* src, IVC* dst, int kernel);
+int vc_gray_to_binary_bernsen(IVC* src, IVC* dst, int kernel);
+int vc_gray_to_binary_niblack(IVC* src, IVC* dst, int kernel, float k);
+int vc_gray_to_binary_range(IVC *src, IVC *dst, int thresholdmin, int thresholdmax, int mode);
 
-#ifdef __cplusplus
-}
-#endif
+//VC6
+int vc_binary_dilate(IVC* src, IVC* dst, int kernel);
+int vc_binary_erode(IVC* src, IVC* dst, int kernel);
+int vc_binary_open(IVC* src, IVC* dst, int kernel);
+int vc_binary_close(IVC* src, IVC* dst, int kernel);
 
-#endif
+//VC7
+int vc_binary_blob_labellingFake(IVC* src, IVC* dst);
+OVC* vc_binary_blob_labelling(IVC* src, IVC* dst, int* nlabels);
+int vc_binary_blob_info(IVC* src, OVC* blobs, int nblobs);
+int vc_blob_segment_dark_blue(IVC *src, IVC *dst);
+
+//VC7_EX3
+int vc_desenhar_marcacoes(IVC* dst, OVC blob);
+
+//VC8
+int vc_gray_histogram_show(IVC* src, IVC* dst);
+int vc_gray_histogram_equalization(IVC* src, IVC* dst);
+
+//VC9
+int vc_gray_edge_prewitt(IVC* src, IVC* dst, float th);
+int vc_gray_edge_sobel(IVC* src, IVC* dst, float th);
+
+//VC10
+int vc_gray_lowpass_mean_filter(IVC* src, IVC* dst, int kernelsize);
+int vc_gray_lowpass_median_filter(IVC* src, IVC* dst, int kernelsize);
+int vc_gray_lowpass_gaussian_filter(IVC* src, IVC* dst);
+int vc_gray_highpass_filter(IVC* src, IVC* dst);
+int vc_gray_highpass_filter_enhance(IVC* src, IVC* dst, int gain);
