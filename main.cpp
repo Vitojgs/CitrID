@@ -311,7 +311,7 @@ int main(void) {
         //    melhorando a circularidade para 0.70-0.80)
         // -------------------------------------------------------
         vc_binary_open (img_seg, img_tmp, 7);
-        vc_binary_close(img_tmp, img_seg, 75);
+        vc_binary_close(img_tmp, img_seg, 20);
 
         // -------------------------------------------------------
         // 5. Blob labelling + metricas
