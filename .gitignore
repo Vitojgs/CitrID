@@ -15,9 +15,6 @@ Release/
 
 # Ficheiros do VSCode
 .vscode/*.json
-!.vscode/launch.json
-!.vscode/tasks.json
-!.vscode/c_cpp_properties.json
 
 # Ficheiros do IDE
 *.swp
