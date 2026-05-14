@@ -1,19 +1,10 @@
 #define _CRT_SECURE_NO_WARNINGS
 
-#include <stdio.h>
-#include <ctype.h>
-#include <string.h>
-#include <malloc.h>
-#include <math.h>
 #include "vc.h"
-#ifndef MAX
-#define MAX(a, b) (((a) > (b)) ? (a) : (b))
-#endif
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //            FUNÇÕES: ALOCAR E LIBERTAR UMA IMAGEM
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 
 // Alocar memória para uma imagem
 IVC* vc_image_new(int width, int height, int channels, int levels)
@@ -2225,5 +2216,112 @@ int vc_gray_highpass_filter_enhance(IVC* src, IVC* dst, int gain)
             datadst[pos] = (unsigned char)res;
         }
     }
+    return 1;
+}
+
+double circularidade(int area, int perim) {
+    if (perim == 0) return 0.0;
+    return (4.0 * M_PI * (double)area) / ((double)perim * (double)perim);
+}
+
+const char* classificar(double dmm) {
+    if      (dmm >= 100) return "CAL 0 (>=100mm)";
+    else if (dmm >=  87) return "CAL 1 (87-100mm)";
+    else if (dmm >=  84) return "CAL 2 (84-96mm)";
+    else if (dmm >=  81) return "CAL 3 (81-92mm)";
+    else if (dmm >=  77) return "CAL 4 (77-88mm)";
+    else if (dmm >=  73) return "CAL 5 (73-84mm)";
+    else if (dmm >=  70) return "CAL 6 (70-80mm)";
+    else if (dmm >=  67) return "CAL 7 (67-76mm)";
+    else if (dmm >=  64) return "CAL 8 (64-73mm)";
+    else if (dmm >=  62) return "CAL 9 (62-70mm)";
+    else if (dmm >=  60) return "CAL 10 (60-68mm)";
+    else if (dmm >=  58) return "CAL 11 (58-66mm)";
+    else if (dmm >=  56) return "CAL 12 (56-63mm)";
+    else if (dmm >=  53) return "CAL 13 (53-60mm)";
+    else                 return "< MIN (<53mm)";
+}
+
+int vc_bgr_to_hsv(IVC* src, IVC* dst)
+{
+    unsigned char* datasrc = (unsigned char*)src->data;
+    unsigned char* datadst = (unsigned char*)dst->data;
+    int width = src->width;
+    int height = src->height;
+    int bytesperline = src->bytesperline;
+    int channels = src->channels;
+    float r, g, b, hue, saturation, value;
+    float rgb_max, rgb_min;
+    int i, size;
+
+    // Verificação de erros
+    if ((src->width <= 0) || (src->height <= 0) || (src->data == NULL)) return 0;
+    if ((src->width != dst->width) || (src->height != dst->height) || (src->channels != dst->channels)) return 0;
+    if (channels != 3) return 0;
+
+    size = width * height * channels;
+
+    for (i = 0; i < size; i = i + channels)
+    {
+        b = (float)datasrc[i];     
+        g = (float)datasrc[i + 1]; 
+        r = (float)datasrc[i + 2]; 
+
+        // Calcula valores maximo e minimo dos canais de cor R, G e B
+        rgb_max = (float)(r > g ? (r > b ? r : b) : (g > b ? g : b));
+        rgb_min = (float)(r < g ? (r < b ? r : b) : (g < b ? g : b));
+
+        // Value toma valores entre [0,255]
+        value = rgb_max;
+        if (value == 0.0)
+        {
+            hue = 0.0;
+            saturation = 0.0;
+        }
+        else
+        {
+            // Saturation toma valores entre [0,255]
+            saturation = ((rgb_max - rgb_min) / rgb_max) * (float)255.0;
+
+            if (saturation == 0.0)
+            {
+                hue = 0.0;
+            }
+            else
+            {
+                // R, G e B tomam valores entre [0,1]
+                r /= 255.0;
+                g /= 255.0;
+                b /= 255.0;
+
+                // Calcula valores m ximo e m nimo dos canais de cor R, G e B (tomam valores entre [0,1])
+                rgb_max = (r > g ? (r > b ? r : b) : (g > b ? g : b));
+                rgb_min = (r < g ? (r < b ? r : b) : (g < b ? g : b));
+
+                // Hue toma valores entre [0,360]
+                if ((rgb_max == r) && (g >= b))
+                {
+                    hue = 60 * (g - b) / (rgb_max - rgb_min);
+                }
+                else if ((rgb_max == r) && (b > g))
+                {
+                    hue = 360 + 60 * (g - b) / (rgb_max - rgb_min);
+                }
+                else if (rgb_max == g)
+                {
+                    hue = 120 + 60 * (b - r) / (rgb_max - rgb_min);
+                }
+                else /* rgb_max == b*/
+                {
+                    hue = 240 + 60 * (r - g) / (rgb_max - rgb_min);
+                }
+            }
+        }
+        // Atribui valores entre [0,255]
+        datadst[i] = (unsigned char)(hue / 360.0 * 255.0);
+        datadst[i + 1] = (unsigned char)(saturation);
+        datadst[i + 2] = (unsigned char)(value);
+    }
+
     return 1;
 }

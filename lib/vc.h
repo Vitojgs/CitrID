@@ -5,13 +5,42 @@
 //                    VISÃO POR COMPUTADOR
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+#ifndef VC_H  
+#define VC_H  
+
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+#include <malloc.h>
+#include <math.h>
+#ifndef MAX
+#define MAX(a, b) (((a) > (b)) ? (a) : (b))
+#endif
+
 #define VC_DEBUG
+
+// ---------------------------------------------------------------
+// Calibracao (enunciado: 280px = 55mm)
+// ---------------------------------------------------------------
+#define PIXELS_POR_MM   (280.0 / 55.0)
+#define MM_POR_PIXEL    (55.0  / 280.0)
+
+// Area minima: laranjas parcialmente visiveis podem ter area baixa
+// Definido empiricamente para aceitar laranjas a entrar no frame.
+#define AREA_MIN_LARANJA  15000
+
+// Circularidade: 4*pi*area/perimetro^2.  Circulo perfeito = 1.0.
+// Blobs abaixo de REJEITAR sao ignorados (maca circ~0.20-0.43).
+// Blobs entre REJEITAR e MIN sao marcados IRREGULAR.
+// Laranjas integras: circ~0.70-0.80.
+#define CIRC_REJEITAR  0.50
+#define CIRC_MIN       0.65
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //                   ESTRUTURA DE UMA IMAGEM
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-typedef struct {
+typedef struct IVC{
 	unsigned char* data;
 	int width, height;
 	int channels;			// Binário/Cinzentos=1; RGB=3
@@ -23,7 +52,7 @@ typedef struct {
 //                    ESTRUTURA DE UM BLOB
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-typedef struct {
+typedef struct OVC {
 	int x, y, width, height;	// Caixa Delimitadora (Bounding Box)
 	int area;					// Área
 	int xc, yc;					// Centro-de-massa
@@ -34,6 +63,22 @@ typedef struct {
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //                    PROTÓTIPOS DE FUNÇÕES
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+// ---------------------------------------------------------------
+// Circularidade: 4*pi*area / perimetro^2
+// ---------------------------------------------------------------
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
+double circularidade(int area, int perim);
+
+// ---------------------------------------------------------------
+// Classificacao segundo Regulamento CEE n. 379/71
+// Usado para encontrar os calibres das laranjas
+// ---------------------------------------------------------------
+
+const char* classificar(double dmm);
 
 // FUNÇÕES: ALOCAR E LIBERTAR UMA IMAGEM
 IVC* vc_image_new(int width, int height, int channels, int levels);
@@ -94,3 +139,8 @@ int vc_gray_lowpass_median_filter(IVC* src, IVC* dst, int kernelsize);
 int vc_gray_lowpass_gaussian_filter(IVC* src, IVC* dst);
 int vc_gray_highpass_filter(IVC* src, IVC* dst);
 int vc_gray_highpass_filter_enhance(IVC* src, IVC* dst, int gain);
+
+//VCTP
+int vc_bgr_to_hsv(IVC* src, IVC* dst);
+
+#endif
